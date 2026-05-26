@@ -527,13 +527,17 @@ function renderDoubanCards(data, container) {
             const safeRate = (item.rate || "暂无")
                 .replace(/</g, '&lt;')
                 .replace(/>/g, '&gt;');
-            
+
+
             // 处理图片URL
-            // 1. 直接使用豆瓣图片URL (添加no-referrer属性)
+// 强制使用稳定代理服务，解决跨域/防盗链问题
             const originalCoverUrl = item.cover;
-            
-            // 2. 也准备代理URL作为备选
-            const proxiedCoverUrl = PROXY_URL + encodeURIComponent(originalCoverUrl);
+
+// 用 images.weserv.nl 作为代理，同时编码URL避免特殊字符问题
+            const proxiedCoverUrl = "https://images.weserv.nl/?url=" + encodeURIComponent(originalCoverUrl);
+
+// 实际渲染时，统一使用代理后的URL
+// 后续渲染图片时，直接用 proxiedCoverUrl 代替 originalCoverUrl
             
             // 为不同设备优化卡片布局
             card.innerHTML = `
