@@ -16,7 +16,8 @@ LibreTV 全局样式
     border: 1px solid #333;
     border-radius: 8px;
     padding: 6px;
-    color: white;
+    color: white;<svg class="logo-icon" ...>...</svg>
+
     display: flex;
     align-items: center;
     justify-content: center;
