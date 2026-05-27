@@ -436,5 +436,39 @@
 
     <!-- 添加弹窗和URL搜索参数处理脚本 -->
     <script src="js/index-page.js"></script>
+    <script src="js/index-page.js"></script>
+    <!-- 添加豆瓣图片加载错误处理 -->
+    <script>
+        // 为豆瓣推荐区域的图片添加错误处理
+        document.addEventListener('DOMContentLoaded', function() {
+            const doubanResults = document.getElementById('douban-results');
+            if (doubanResults) {
+                // 监听子元素变化，为新添加的图片添加错误处理
+                const observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        mutation.addedNodes.forEach(function(node) {
+                            if (node.tagName === 'IMG') {
+                                node.onerror = function() {
+                                    this.src = 'image/logo.png'; // 使用现有logo作为占位图
+                                    this.alt = '图片加载失败';
+                                };
+                            } else if (node.querySelectorAll) {
+                                node.querySelectorAll('img').forEach(img => {
+                                    img.onerror = function() {
+                                        this.src = 'image/logo.png';
+                                        this.alt = '图片加载失败';
+                                    };
+                                });
+                            }
+                        });
+                    });
+                });
+
+                observer.observe(doubanResults, { childList: true, subtree: true });
+            }
+        });
+    </script>
+</body>
+</html>
 </body>
 </html>
