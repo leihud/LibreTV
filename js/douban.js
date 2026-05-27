@@ -530,11 +530,15 @@ function renderDoubanCards(data, container) {
 
 
             // 处理图片URL
+// 处理图片URL
 // 强制使用稳定代理服务，解决跨域/防盗链问题
             const originalCoverUrl = item.cover;
 
-// 用 images.weserv.nl 作为代理，同时编码URL避免特殊字符问题
-            const proxiedCoverUrl = "https://images.weserv.nl/?url=" + encodeURIComponent(originalCoverUrl);
+// 用 PicCDN 作为代理，同时编码URL避免特殊字符问题
+            const proxiedCoverUrl = "https://pic.duokan.com/reader_image?url=" + encodeURIComponent(originalCoverUrl);
+
+// 实际渲染时，统一使用代理后的URL
+
 
 // 实际渲染时，统一使用代理后的URL
 // 后续渲染图片时，直接用 proxiedCoverUrl 代替 originalCoverUrl
