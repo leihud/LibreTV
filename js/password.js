@@ -5,6 +5,11 @@
  * 通过读取页面上嵌入的环境变量来检查
  */
 function isPasswordProtected() {
+    // 如果配置中禁用了密码保护，直接返回 false
+    if (PASSWORD_CONFIG && PASSWORD_CONFIG.enablePasswordProtection === false) {
+        return false;
+    }
+    
     // 只检查普通密码
     const pwd = window.__ENV__ && window.__ENV__.PASSWORD;
     
@@ -18,6 +23,10 @@ function isPasswordProtected() {
  * 为了安全考虑，所有部署都必须设置密码
  */
 function isPasswordRequired() {
+    // 如果配置中禁用了密码保护，直接返回 false（不强制要求设置密码）
+    if (PASSWORD_CONFIG && PASSWORD_CONFIG.enablePasswordProtection === false) {
+        return false;
+    }
     return !isPasswordProtected();
 }
 
