@@ -1,6 +1,12 @@
 // 豆瓣热门电影电视剧推荐功能
 
 /**
+ * 备用默认封面图片（优雅的渐变背景 + 播放图标）
+ * 如果 config.js 中的 DEFAULT_COVER_IMAGE 未定义，则使用此值
+ */
+const DOUBAN_DEFAULT_COVER = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMDAgNDUwIiBoZWlnaHQ9IjQ1MCIgd2lkdGg9IjMwMCI+PHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjAiIGQ9Ik0wIDBoMzAwdjQ1MEgweiIvPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMxMTExMTEiIHJ4PSIyIi8+PHJlY3QgeD0iNTAlIiB5PSI1MCUiIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCIgZmlsbD0ibm9uZSIgcng9IjEiLz48cmVjdCB4PSI1MCUiIHk9IjUwJSIgd2lkdGg9IjUwIiBoZWlnaHQ9IjMwIiBmaWxsPSIjMzMzMzMzIiByeD0iMSIvPjxyZWN0IHg9IjUwJSIgeT0iNTAlIiB3aWR0aD0iNzAiIGhlaWdodD0iNDAiIGZpbGw9IiM0NDQ0NDQiIHJ4PSIxIi8+PHBhdGggZD0iTTg3LjUgMjIwIDYzIDIzMy41djItMjcgMjQuNS0xMy41IDg3LjUgNDAuNXoiIGZpbGw9IiNmZmYiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9zdmc+';
+
+/**
  * 处理豆瓣图片加载错误
  * @param {HTMLImageElement} img - 图片元素
  * @param {string} proxiedUrl - 代理URL
@@ -9,18 +15,21 @@ function handleDoubanImageError(img, proxiedUrl) {
     // 清除之前的错误处理器，避免循环调用
     img.onerror = null;
     
+    // 使用全局默认图或备用默认图
+    const defaultCover = typeof DEFAULT_COVER_IMAGE !== 'undefined' ? DEFAULT_COVER_IMAGE : DOUBAN_DEFAULT_COVER;
+    
     if (proxiedUrl && img.src !== proxiedUrl) {
         // 第一次错误：尝试使用代理URL
         img.src = proxiedUrl;
         // 设置第二次错误处理：使用默认图
         img.onerror = function() {
             img.onerror = null;
-            img.src = DEFAULT_COVER_IMAGE;
+            img.src = defaultCover;
             img.classList.add('object-contain');
         };
     } else {
         // 直接使用默认图
-        img.src = DEFAULT_COVER_IMAGE;
+        img.src = defaultCover;
         img.classList.add('object-contain');
     }
 }
