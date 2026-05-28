@@ -43,7 +43,7 @@ function generateDefaultCover(title) {
             <!-- 播放按钮 -->
             <polygon points="130,165 130,195 160,180" fill="#ffffff"/>
             <!-- 标题文字 - 加粗加大字号 -->
-            <text x="150" y="265" text-anchor="middle" fill="#ffffff" font-size="18" font-family="sans-serif" font-weight="bold">${displayTitle}</text>
+            <text x="150" y="265" text-anchor="middle" fill="#ffffff" font-size="22" font-family="sans-serif" font-weight="bold">${displayTitle}</text>
         </svg>
     `.replace(/\s+/g, ' ').trim();
     
