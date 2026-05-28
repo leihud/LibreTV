@@ -749,8 +749,11 @@ async function search() {
             if (coverUrl) {
                 if (coverUrl.startsWith('http')) {
                     // 完整URL，直接使用
-                } else if (coverUrl.startsWith('/')) {
-                    // 相对路径，尝试拼接API站点的基础URL
+                } else if (coverUrl.startsWith('//')) {
+                    // 协议相对URL，添加https协议
+                    coverUrl = 'https:' + coverUrl;
+                } else {
+                    // 相对路径（可能以 / 开头或不以 / 开头），尝试拼接API站点的基础URL
                     let baseUrl = '';
                     if (item.api_url) {
                         baseUrl = item.api_url.replace(/\/api\.php.*/, '');
@@ -758,11 +761,15 @@ async function search() {
                         baseUrl = API_SITES[sourceCode].detail || API_SITES[sourceCode].api.replace(/\/api\.php.*/, '');
                     }
                     if (baseUrl) {
+                        // 如果图片路径不以 / 开头，添加 /
+                        if (!coverUrl.startsWith('/')) {
+                            coverUrl = '/' + coverUrl;
+                        }
                         coverUrl = baseUrl + coverUrl;
                     }
                 }
             }
-            const hasCover = coverUrl && (coverUrl.startsWith('http') || coverUrl.startsWith('//'));
+            const hasCover = coverUrl && coverUrl.startsWith('http');
 
             return `
                 <div class="card-hover bg-[#111] rounded-lg overflow-hidden cursor-pointer transition-all hover:scale-[1.02] h-full shadow-sm hover:shadow-md" 
