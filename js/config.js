@@ -11,6 +11,46 @@ const DEFAULT_COVER_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL
 const DEFAULT_COVER_URL = `url(${DEFAULT_COVER_IMAGE})`;
 
 /**
+ * 生成带标题的默认封面图
+ * @param {string} title - 内容标题
+ * @returns {string} - base64 编码的 SVG 图片
+ */
+function generateDefaultCover(title) {
+    // 清理标题，移除特殊字符
+    const cleanTitle = (title || '无标题').replace(/[<>&"]/g, function(c) {
+        const entities = {'<':'&lt;', '>':'&gt;', '&':'&amp;', '"':'&quot;'};
+        return entities[c];
+    });
+    
+    // 截断长标题（最多显示12个字符）
+    const displayTitle = cleanTitle.length > 12 ? cleanTitle.substring(0, 12) + '...' : cleanTitle;
+    
+    // 生成 SVG
+    const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 450" height="450" width="300">
+            <defs>
+                <linearGradient id="coverGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:#1a1a1a"/>
+                    <stop offset="100%" style="stop-color:#0d0d0d"/>
+                </linearGradient>
+            </defs>
+            <!-- 背景 -->
+            <rect width="100%" height="100%" fill="url(#coverGradient)"/>
+            <!-- 装饰性圆环 -->
+            <circle cx="150" cy="180" r="35" fill="none" stroke="#2a2a2a" stroke-width="2"/>
+            <circle cx="150" cy="180" r="45" fill="none" stroke="#1f1f1f" stroke-width="1"/>
+            <circle cx="150" cy="180" r="55" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+            <!-- 播放按钮 -->
+            <polygon points="130,165 130,195 160,180" fill="#ffffff"/>
+            <!-- 标题文字 -->
+            <text x="150" y="260" text-anchor="middle" fill="#888888" font-size="14" font-family="sans-serif" font-weight="500">${displayTitle}</text>
+        </svg>
+    `.replace(/\s+/g, ' ').trim();
+    
+    return 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
+}
+
+/**
  * 处理图片URL，支持完整URL、协议相对URL和相对路径
  * @param {string} picUrl - 原始图片URL
  * @param {string} sourceCode - API来源代码

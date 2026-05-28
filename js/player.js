@@ -1679,10 +1679,10 @@ async function showSwitchResourceModal() {
             <div class="relative group ${isCurrentSource ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:scale-105 transition-transform'}" 
                  ${!isCurrentSource ? `onclick="switchToResource('${sourceKey}', '${result.vod_id}')"` : ''}>
                 <div class="aspect-[2/3] rounded-lg overflow-hidden bg-gray-800 relative">
-                    <img src="${resolveCoverUrl(result.vod_pic, sourceKey) || DEFAULT_COVER_IMAGE}" 
+                    <img src="${resolveCoverUrl(result.vod_pic, sourceKey) || generateDefaultCover(result.vod_name)}" 
                          alt="${result.vod_name}"
                          class="w-full h-full object-cover"
-                         onerror="this.onerror=null; this.src='${DEFAULT_COVER_IMAGE}'">
+                         onerror="this.onerror=null; this.src=generateDefaultCover('${result.vod_name}')">
                     
                     <!-- 速率显示在图片右上角 -->
                     <div class="absolute top-1 right-1 speed-badge bg-black bg-opacity-75">

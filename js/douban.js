@@ -10,13 +10,16 @@ const DOUBAN_DEFAULT_COVER = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDov
  * 处理豆瓣图片加载错误
  * @param {HTMLImageElement} img - 图片元素
  * @param {string} proxiedUrl - 代理URL
+ * @param {string} title - 内容标题（用于生成带标题的默认图）
  */
-function handleDoubanImageError(img, proxiedUrl) {
+function handleDoubanImageError(img, proxiedUrl, title) {
     // 清除之前的错误处理器，避免循环调用
     img.onerror = null;
     
-    // 使用全局默认图或备用默认图
-    const defaultCover = typeof DEFAULT_COVER_IMAGE !== 'undefined' ? DEFAULT_COVER_IMAGE : DOUBAN_DEFAULT_COVER;
+    // 优先使用 generateDefaultCover 生成带标题的封面图
+    const defaultCover = typeof generateDefaultCover === 'function' 
+        ? generateDefaultCover(title) 
+        : (typeof DEFAULT_COVER_IMAGE !== 'undefined' ? DEFAULT_COVER_IMAGE : DOUBAN_DEFAULT_COVER);
     
     if (proxiedUrl && img.src !== proxiedUrl) {
         // 第一次错误：尝试使用代理URL
@@ -582,7 +585,7 @@ function renderDoubanCards(data, container) {
                 <div class="relative w-full aspect-[2/3] overflow-hidden cursor-pointer" onclick="fillAndSearchWithDouban('${safeTitle}')">
                     <img src="${originalCoverUrl}" alt="${safeTitle}" 
                         class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                        onerror="handleDoubanImageError(this, '${proxiedCoverUrl}')"
+                        onerror="handleDoubanImageError(this, '${proxiedCoverUrl}', '${safeTitle}')"
                         loading="lazy" referrerpolicy="no-referrer">
                     <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
                     <div class="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded-sm">
