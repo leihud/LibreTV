@@ -22,8 +22,8 @@ function generateDefaultCover(title) {
         return entities[c];
     });
     
-    // 截断长标题（最多显示12个字符）
-    const displayTitle = cleanTitle.length > 12 ? cleanTitle.substring(0, 12) + '...' : cleanTitle;
+    // 截断长标题（最多显示16个字符）
+    const displayTitle = cleanTitle.length > 16 ? cleanTitle.substring(0, 16) + '...' : cleanTitle;
     
     // 生成 SVG
     const svg = `
@@ -42,8 +42,8 @@ function generateDefaultCover(title) {
             <circle cx="150" cy="180" r="55" fill="none" stroke="#1a1a1a" stroke-width="1"/>
             <!-- 播放按钮 -->
             <polygon points="130,165 130,195 160,180" fill="#ffffff"/>
-            <!-- 标题文字 -->
-            <text x="150" y="260" text-anchor="middle" fill="#888888" font-size="14" font-family="sans-serif" font-weight="500">${displayTitle}</text>
+            <!-- 标题文字 - 加粗加大字号 -->
+            <text x="150" y="265" text-anchor="middle" fill="#ffffff" font-size="18" font-family="sans-serif" font-weight="bold">${displayTitle}</text>
         </svg>
     `.replace(/\s+/g, ' ').trim();
     
