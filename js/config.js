@@ -4,6 +4,50 @@ const PROXY_URL = '/proxy/';    // 适用于 Cloudflare, Netlify (带重写), Ve
 const SEARCH_HISTORY_KEY = 'videoSearchHistory';
 const MAX_HISTORY_ITEMS = 5;
 
+/**
+ * 处理图片URL，支持完整URL、协议相对URL和相对路径
+ * @param {string} picUrl - 原始图片URL
+ * @param {string} sourceCode - API来源代码
+ * @param {string} apiUrl - 自定义API URL（可选）
+ * @returns {string|null} - 处理后的完整图片URL，无法处理时返回null
+ */
+function resolveCoverUrl(picUrl, sourceCode, apiUrl) {
+    if (!picUrl || !picUrl.trim()) {
+        return null;
+    }
+    
+    picUrl = picUrl.trim();
+    
+    if (picUrl.startsWith('http')) {
+        // 完整URL，直接使用
+        return picUrl;
+    }
+    
+    if (picUrl.startsWith('//')) {
+        // 协议相对URL，添加https协议
+        return 'https:' + picUrl;
+    }
+    
+    // 相对路径，尝试拼接API站点的基础URL
+    let baseUrl = '';
+    
+    if (apiUrl) {
+        baseUrl = apiUrl.replace(/\/api\.php.*/, '');
+    } else if (sourceCode && API_SITES[sourceCode]) {
+        baseUrl = API_SITES[sourceCode].detail || API_SITES[sourceCode].api.replace(/\/api\.php.*/, '');
+    }
+    
+    if (baseUrl) {
+        // 如果图片路径不以 / 开头，添加 /
+        if (!picUrl.startsWith('/')) {
+            picUrl = '/' + picUrl;
+        }
+        return baseUrl + picUrl;
+    }
+    
+    return null;
+}
+
 // 密码保护配置
 const PASSWORD_CONFIG = {
     localStorageKey: 'passwordVerified',  // 存储验证状态的键名

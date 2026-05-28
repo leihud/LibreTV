@@ -744,32 +744,9 @@ async function search() {
                 `data-api-url="${item.api_url.replace(/"/g, '&quot;')}"` : '';
 
             // 修改为水平卡片布局，图片在左侧，文本在右侧，并优化样式
-            // 处理图片URL，支持完整URL和相对路径
-            let coverUrl = item.vod_pic;
-            if (coverUrl) {
-                if (coverUrl.startsWith('http')) {
-                    // 完整URL，直接使用
-                } else if (coverUrl.startsWith('//')) {
-                    // 协议相对URL，添加https协议
-                    coverUrl = 'https:' + coverUrl;
-                } else {
-                    // 相对路径（可能以 / 开头或不以 / 开头），尝试拼接API站点的基础URL
-                    let baseUrl = '';
-                    if (item.api_url) {
-                        baseUrl = item.api_url.replace(/\/api\.php.*/, '');
-                    } else if (sourceCode && API_SITES[sourceCode]) {
-                        baseUrl = API_SITES[sourceCode].detail || API_SITES[sourceCode].api.replace(/\/api\.php.*/, '');
-                    }
-                    if (baseUrl) {
-                        // 如果图片路径不以 / 开头，添加 /
-                        if (!coverUrl.startsWith('/')) {
-                            coverUrl = '/' + coverUrl;
-                        }
-                        coverUrl = baseUrl + coverUrl;
-                    }
-                }
-            }
-            const hasCover = coverUrl && coverUrl.startsWith('http');
+            // 使用通用函数处理图片URL
+            const coverUrl = resolveCoverUrl(item.vod_pic, sourceCode, item.api_url);
+            const hasCover = !!coverUrl;
 
             return `
                 <div class="card-hover bg-[#111] rounded-lg overflow-hidden cursor-pointer transition-all hover:scale-[1.02] h-full shadow-sm hover:shadow-md" 
