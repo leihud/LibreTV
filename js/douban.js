@@ -1,5 +1,30 @@
 // 豆瓣热门电影电视剧推荐功能
 
+/**
+ * 处理豆瓣图片加载错误
+ * @param {HTMLImageElement} img - 图片元素
+ * @param {string} proxiedUrl - 代理URL
+ */
+function handleDoubanImageError(img, proxiedUrl) {
+    // 清除之前的错误处理器，避免循环调用
+    img.onerror = null;
+    
+    if (proxiedUrl && img.src !== proxiedUrl) {
+        // 第一次错误：尝试使用代理URL
+        img.src = proxiedUrl;
+        // 设置第二次错误处理：使用默认图
+        img.onerror = function() {
+            img.onerror = null;
+            img.src = DEFAULT_COVER_IMAGE;
+            img.classList.add('object-contain');
+        };
+    } else {
+        // 直接使用默认图
+        img.src = DEFAULT_COVER_IMAGE;
+        img.classList.add('object-contain');
+    }
+}
+
 // 豆瓣标签列表 - 修改为默认标签
 let defaultMovieTags = ['热门', '最新', '经典', '豆瓣高分', '冷门佳片', '华语', '欧美', '韩国', '日本', '动作', '喜剧', '日综', '爱情', '科幻', '悬疑', '恐怖', '治愈'];
 let defaultTvTags = ['热门', '美剧', '英剧', '韩剧', '日剧', '国产剧', '港剧', '日本动画', '综艺', '纪录片'];
@@ -548,7 +573,7 @@ function renderDoubanCards(data, container) {
                 <div class="relative w-full aspect-[2/3] overflow-hidden cursor-pointer" onclick="fillAndSearchWithDouban('${safeTitle}')">
                     <img src="${originalCoverUrl}" alt="${safeTitle}" 
                         class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                        onerror="this.onerror=null; this.src='${proxiedCoverUrl}'; this.classList.add('object-contain');"
+                        onerror="handleDoubanImageError(this, '${proxiedCoverUrl}')"
                         loading="lazy" referrerpolicy="no-referrer">
                     <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
                     <div class="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded-sm">

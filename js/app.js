@@ -756,10 +756,15 @@ async function search() {
                         <div class="relative flex-shrink-0 search-card-img-container">
                             <img src="${coverUrl}" alt="${safeName}" 
                                  class="h-full w-full object-cover transition-transform hover:scale-110" 
-                                 onerror="this.onerror=null; this.src='https://via.placeholder.com/300x450?text=无封面'; this.classList.add('object-contain');" 
+                                 onerror="this.onerror=null; this.src='${DEFAULT_COVER_IMAGE}'; this.classList.add('object-contain');" 
                                  loading="lazy">
                             <div class="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent"></div>
-                        </div>` : ''}
+                        </div>` : `
+                        <div class="relative flex-shrink-0 search-card-img-container bg-gray-800 flex items-center justify-center">
+                            <svg class="w-12 h-12 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                            </svg>
+                        </div>`}
                         
                         <div class="p-2 flex flex-col flex-grow">
                             <div class="flex-grow">

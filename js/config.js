@@ -4,6 +4,12 @@ const PROXY_URL = '/proxy/';    // 适用于 Cloudflare, Netlify (带重写), Ve
 const SEARCH_HISTORY_KEY = 'videoSearchHistory';
 const MAX_HISTORY_ITEMS = 5;
 
+// 默认封面图片（优雅的渐变背景 + 播放图标）
+const DEFAULT_COVER_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMDAgNDUwIiBoZWlnaHQ9IjQ1MCIgd2lkdGg9IjMwMCI+PHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjAiIGQ9Ik0wIDBoMzAwdjQ1MEgweiIvPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMxMTExMTEiIHJ4PSIyIi8+PHJlY3QgeD0iNTAlIiB5PSI1MCUiIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCIgZmlsbD0ibm9uZSIgcng9IjEiLz48cmVjdCB4PSI1MCUiIHk9IjUwJSIgd2lkdGg9IjUwIiBoZWlnaHQ9IjMwIiBmaWxsPSIjMzMzMzMzIiByeD0iMSIvPjxyZWN0IHg9IjUwJSIgeT0iNTAlIiB3aWR0aD0iNzAiIGhlaWdodD0iNDAiIGZpbGw9IiM0NDQ0NDQiIHJ4PSIxIi8+PHBhdGggZD0iTTg3LjUgMjIwIDYzIDIzMy41djItMjcgMjQuNS0xMy41IDg3LjUgNDAuNXoiIGZpbGw9IiNmZmYiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9zdmc+';
+
+// 默认封面图片 URL（用于 onerror）
+const DEFAULT_COVER_URL = `url(${DEFAULT_COVER_IMAGE})`;
+
 /**
  * 处理图片URL，支持完整URL、协议相对URL和相对路径
  * @param {string} picUrl - 原始图片URL
